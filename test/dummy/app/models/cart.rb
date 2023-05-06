@@ -2,7 +2,7 @@ class Cart < ApplicationRecord
 
   include DiscoApp::Concerns::Synchronises
 
-  SHOPIFY_API_CLASS = ShopifyAPI::Cart
+  # SHOPIFY_API_CLASS = ShopifyAPI::Cart
 
   belongs_to :shop, class_name: 'DiscoApp::Shop'
 
