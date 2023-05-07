@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://widgets.myshopify.com/admin/api/2019-10/products.json?limit=250&since_id=0
+    uri: https://widgets.myshopify.com/admin/api/2022-10/products.json?params%5Blimit%5D=250&params%5Bsince_id%5D=0
     body:
       encoding: US-ASCII
       string: ''
@@ -57,7 +57,7 @@ http_interactions:
       X-Shopify-Api-Version-Warning:
       - https://shopify.dev/concepts/about-apis/versioning
       Link:
-      - <https://widgets.myshopify.com/admin/api/2019-10/products.json?limit=250&page_info=eyJvcmRlciI6ImlkIGFzYyIsImxhc3RfaWQiOjY1Njk3NDE3NDYzMTAsImxhc3RfdmFsdWUiOiI2NTY5NzQxNzQ2MzEwIiwiZGlyZWN0aW9uIjoicHJldiJ9>;
+      - <https://widgets.myshopify.com/admin/api/2022-10/products.json?limit=250&page_info=eyJvcmRlciI6ImlkIGFzYyIsImxhc3RfaWQiOjY1Njk3NDE3NDYzMTAsImxhc3RfdmFsdWUiOiI2NTY5NzQxNzQ2MzEwIiwiZGlyZWN0aW9uIjoicHJldiJ9>;
         rel="previous"
       Strict-Transport-Security:
       - max-age=7889238

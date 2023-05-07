@@ -11,13 +11,21 @@ class DiscoApp::ChargesService
 
     # Create the charge object on Shopify.
     shopify_charge = shop.with_api_context do
-      subscription.shopify_charge_class.create(
-        name: subscription.plan.name,
-        price: format('%.2f', (subscription.amount.to_f / 100.0)),
-        trial_days: subscription.plan.has_trial? ? subscription.trial_period_days : nil,
-        return_url: charge.activate_url,
-        test: !DiscoApp.configuration.real_charges?
-      )
+      application_charge = subscription.shopify_charge_class.new
+      application_charge.name = subscription.plan.name
+      application_charge.price = format('%.2f', (subscription.amount.to_f / 100.0))
+      application_charge.trial_days = subscription.plan.has_trial? ? subscription.trial_period_days : nil
+      application_charge.return_url = charge.activate_url
+      application_charge.test = !DiscoApp.configuration.real_charges?
+      application_charge.save!
+      application_charge
+      # subscription.shopify_charge_class.create(
+      #   name: subscription.plan.name,
+      #   price: format('%.2f', (subscription.amount.to_f / 100.0)),
+      #   trial_days: subscription.plan.has_trial? ? subscription.trial_period_days : nil,
+      #   return_url: charge.activate_url,
+      #   test: !DiscoApp.configuration.real_charges?
+      # )
     end
 
     # If we couldn't create the charge on Shopify, return nil.

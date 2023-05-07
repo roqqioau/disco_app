@@ -32,7 +32,7 @@ module DiscoApp
         })
 
         @shopify_records = shop.with_api_context do
-          synchronise_class::SHOPIFY_API_CLASS.find(:all, params: request_params)
+          synchronise_class::SHOPIFY_API_CLASS.all(params: request_params)
         end
 
         shopify_records.each do |shopify_record|
