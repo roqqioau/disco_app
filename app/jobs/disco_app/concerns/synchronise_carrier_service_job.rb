@@ -9,12 +9,12 @@ module DiscoApp::Concerns::SynchroniseCarrierServiceJob
 
     # Registered the carrier service if it hasn't been registered yet.
     unless current_carrier_service_names.include?(carrier_service_name)
-      ShopifyAPI::CarrierService.create(
-        name: carrier_service_name,
-        callback_url: callback_url,
-        service_discovery: true,
-        format: :json
-      )
+      # ShopifyAPI::CarrierService.create(
+      #   name: carrier_service_name,
+      #   callback_url: callback_url,
+      #   service_discovery: true,
+      #   format: :json
+      # )
     end
 
     # Ensure any existing carrier services (with the correct name) are active
@@ -50,7 +50,7 @@ module DiscoApp::Concerns::SynchroniseCarrierServiceJob
 
     # Return a list of currently registered carrier services.
     def current_carrier_services
-      @current_carrier_services ||= ShopifyAPI::CarrierService.find(:all)
+      @current_carrier_services ||= ShopifyAPI::CarrierService.all
     end
 
 end

@@ -50,7 +50,7 @@ class DiscoApp::ChargesService
   def self.activate(shop, charge)
     # Start by fetching the Shopify charge to check that it was accepted.
     shopify_charge = shop.with_api_context do
-      charge.subscription.shopify_charge_class.find(charge.shopify_id)
+      charge.subscription.shopify_charge_class.find(id: charge.shopify_id)
     end
 
     # Update the status of the local charge based on the Shopify charge.

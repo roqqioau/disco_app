@@ -16,6 +16,7 @@ module DiscoApp::Concerns::SynchroniseWebhooksJob
         webhook.fields = topic_fields(topic)
         webhook.format = 'json'
         webhook.save!
+        webhook
         # ShopifyAPI::Webhook.create(
         #   topic: topic,
         #   fields: topic_fields(topic),
@@ -77,12 +78,14 @@ module DiscoApp::Concerns::SynchroniseWebhooksJob
     def with_verbose_output(topic)
       print "\n#{topic}"
       shopify_response = yield
-      if shopify_response.errors.blank?
+      if shopify_response.errors.errors.blank?
         print " - registered successfully\n"
       else
         print " - not registered\n"
-        puts shopify_response.errors.messages
+        puts shopify_response.errors.full_messages
       end
+    rescue ShopifyAPI::Errors::HttpResponseError => e
+      puts e
     end
 
 end
