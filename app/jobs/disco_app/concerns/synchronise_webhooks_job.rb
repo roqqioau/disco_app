@@ -10,12 +10,19 @@ module DiscoApp::Concerns::SynchroniseWebhooksJob
     # Register any webhooks that haven't been registered yet.
     (expected_topics - current_topics).each do |topic|
       with_verbose_output(topic) do
-        ShopifyAPI::Webhook.create(
-          topic: topic,
-          fields: topic_fields(topic),
-          address: webhooks_url,
-          format: 'json'
-        )
+        webhook = ShopifyAPI::Webhook.new
+        webhook.address = webhooks_url
+        webhook.topic = topic
+        webhook.fields = topic_fields(topic)
+        webhook.format = 'json'
+        webhook.save!
+        webhook
+        # ShopifyAPI::Webhook.create(
+        #   topic: topic,
+        #   fields: topic_fields(topic),
+        #   address: webhooks_url,
+        #   format: 'json'
+        # )
       end
     end
 
@@ -50,7 +57,7 @@ module DiscoApp::Concerns::SynchroniseWebhooksJob
 
     # Return a list of current registered webhooks.
     def current_webhooks
-      @current_webhooks ||= ShopifyAPI::Webhook.find(:all)
+      @current_webhooks ||= ShopifyAPI::Webhook.all
     end
 
     # Return a list of requested fields for the given topic.
@@ -71,12 +78,14 @@ module DiscoApp::Concerns::SynchroniseWebhooksJob
     def with_verbose_output(topic)
       print "\n#{topic}"
       shopify_response = yield
-      if shopify_response.errors.blank?
+      if shopify_response.errors.errors.blank?
         print " - registered successfully\n"
       else
         print " - not registered\n"
-        puts shopify_response.errors.messages
+        puts shopify_response.errors.full_messages
       end
+    rescue ShopifyAPI::Errors::HttpResponseError => e
+      puts e
     end
 
 end

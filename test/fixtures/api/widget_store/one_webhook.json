@@ -1,0 +1,14 @@
+{
+  "webhook": {
+    "id": 4657730138,
+    "address": "pubsub://projectName:topicName",
+    "topic": "customers/update",
+    "created_at": "2023-04-27T06:12:37-04:00",
+    "updated_at": "2023-04-27T06:12:37-04:00",
+    "format": "json",
+    "fields": [],
+    "metafield_namespaces": [],
+    "api_version": "unstable",
+    "private_metafield_namespaces": []
+  }
+}

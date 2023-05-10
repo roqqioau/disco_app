@@ -58,7 +58,8 @@ class SynchronisesTest < ActionDispatch::IntegrationTest
   test 'shopify api model still allows synchronisation' do
     assert_equal({}, @product.data)
 
-    shopify_product = ShopifyAPI::Product.new(JSON.parse(webhook_fixture('product_updated')))
+    shopify_product = ShopifyAPI::Product.new(session: ShopifyAPI::Auth::Session.new(id: "id", shop: "test-shop.myshopify.io", access_token: "this_is_a_test_token"))
+    shopify_product.original_state = JSON.parse(webhook_fixture('product_updated'))
     Product.synchronise(@shop, shopify_product)
 
     # Assert the product was updated locally, with the correct attributes.

@@ -2,7 +2,8 @@ module DiscoApp::Concerns::AuthenticatedController
 
   extend ActiveSupport::Concern
   include ShopifyApp::LoginProtection
-
+  include ShopifyApp::Localization
+  include ShopifyApp::EmbeddedApp
   included do
     before_action :auto_login
     before_action :check_shop_whitelist
@@ -11,25 +12,37 @@ module DiscoApp::Concerns::AuthenticatedController
     before_action :check_installed
     before_action :check_current_subscription
     before_action :check_active_charge
-    around_action :shopify_session
+    around_action :activate_shopify_session
     layout 'embedded_app'
+  end
+
+
+  def check_request_hmac_valid
+    head :unauthorized unless request_hmac_valid?
   end
 
   private
 
     def auto_login
-      return unless shop_session.nil? && request_hmac_valid?
+      return unless current_shopify_session.blank? && request_hmac_valid?
 
       shop = DiscoApp::Shop.find_by(shopify_domain: sanitized_shop_name)
       return if shop.blank?
 
-      session[:shopify] = shop.id
-      session[:shopify_domain] = sanitized_shop_name
+      #session[:shopify] = shop.id
+      #session[:shopify_domain] = sanitized_shop_name
+      cookie = ShopifyAPI::Auth::Oauth::SessionCookie.new(value: "offline_#{sanitized_shop_name}", expires: nil)
+      cookies.encrypted[cookie.name] = {
+        expires: cookie.expires,
+        secure: true,
+        http_only: true,
+        value: cookie.value,
+      }
     end
 
     def shopify_shop
-      if shop_session
-        @shop = DiscoApp::Shop.find_by!(shopify_domain: @shop_session.domain)
+      if current_shopify_session
+        @shop = DiscoApp::Shop.find_by!(shopify_domain: @current_shopify_session.shop)
       else
         redirect_to_login
       end
@@ -69,9 +82,9 @@ module DiscoApp::Concerns::AuthenticatedController
     end
 
     def check_shop_whitelist
-      return unless shop_session
+      return if current_shopify_session.blank?
       return if ENV['WHITELISTED_DOMAINS'].blank?
-      return if ENV['WHITELISTED_DOMAINS'].include?(shop_session.url)
+      return if ENV['WHITELISTED_DOMAINS'].include?(current_shopify_session.shop)
 
       redirect_to_login
     end

@@ -77,7 +77,9 @@ class DiscoApp::ChargesServiceTest < ActiveSupport::TestCase
   end
 
   test 'creating a new charge for a one-time subscription is successful' do
-    stub_api_request(:post, "#{@dev_shop.admin_url}/application_charges.json", 'widget_store/charges/create_application_charge')
+    res = {"application_charge":{"name":"Lifetime","price":"49.00","return_url":"https://test.example.com/subscriptions/31191756/charges/550483572/activate","test":true,"trial_days":nil}}
+    stub_request(:post, "#{@dev_shop.admin_url}/application_charges.json")
+    .with(body: res).to_return(status: 201, body: api_fixture('widget_store/charges/create_application_charge_response').to_json)
 
     new_charge = DiscoApp::ChargesService.create(@dev_shop, @dev_subscription)
     assert_equal 1012637323, new_charge.shopify_id
