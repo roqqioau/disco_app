@@ -3,7 +3,7 @@ module DiscoApp
 
     class << self
       def store(session, *args)
-        shop = Shop.find_or_initialize_by(shopify_domain: session.shop)
+        shop = DiscoApp::Shop.find_or_initialize_by(shopify_domain: session.shop)
         shop.shopify_token = session.access_token
         shop.access_scopes = session.scope.to_s
         shop.save!
@@ -18,7 +18,7 @@ module DiscoApp
       end
 
       def retrieve_by_shopify_domain(domain)
-        shop = Shop.find_by(shopify_domain: domain)
+        shop = DiscoApp::Shop.find_by(shopify_domain: domain)
         construct_session(shop)
       end
 
