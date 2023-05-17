@@ -24,7 +24,7 @@ module DiscoApp::Concerns::AuthenticatedController
   private
 
     def auto_login
-      return unless current_shopify_session.blank? && request_hmac_valid?
+      return unless current_shopify_session.blank? && request_hmac_valid? && !DiscoApp.configuration.disable_auto_login?
 
       shop = DiscoApp::Shop.find_by(shopify_domain: sanitized_shop_name)
       return if shop.blank?
