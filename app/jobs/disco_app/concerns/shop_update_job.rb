@@ -5,7 +5,7 @@ module DiscoApp::Concerns::ShopUpdateJob
   # Perform an update of the current shop's information.
   def perform(_shop, shop_data = nil)
     # If we weren't provided with shop data (eg from a webhook), fetch it.
-    shop_data ||= JSON.parse(ShopifyAPI::Shop.all[0].original_state.to_json)
+    shop_data ||= JSON.parse(ShopifyAPI::Shop.all[0].to_json)
     # Update attributes stored directly on the Shop model, along with the data hash itself.
      @shop.update(
        shop_data

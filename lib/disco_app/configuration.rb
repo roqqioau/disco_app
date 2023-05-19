@@ -34,6 +34,8 @@ module DiscoApp
     alias skip_carrier_request_verification? skip_carrier_request_verification
     attr_accessor :skip_oauth
     alias skip_oauth? skip_oauth
+    attr_accessor :disable_auto_login
+    alias disable_auto_login? disable_auto_login
 
   end
 

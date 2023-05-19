@@ -28,7 +28,7 @@ module DiscoApp::Concerns::SynchroniseWebhooksJob
 
     # Remove any extraneous topics.
     current_webhooks.each do |webhook|
-      ShopifyAPI::Webhook.delete(webhook.id) unless expected_topics.include?(webhook.topic.to_sym)
+      ShopifyAPI::Webhook.delete(id: webhook.id) unless expected_topics.include?(webhook.topic.to_sym)
     end
 
     # Ensure webhook addresses are current.
