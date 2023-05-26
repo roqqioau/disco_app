@@ -3,6 +3,23 @@ This file contains more detailed instructions on what's required when updating
 an application between one release version of the gem to the next. It's intended
 as more in-depth accompaniment to the notes in `CHANGELOG.md` for each version.
 
+## Bump shopify_api from 9.0 to 12.3, shopify_app from 12.0.7 to 21.3
+
+The shopify_api and shopify_app both have break change, please see [ shopify_api reademe](https://github.com/Shopify/shopify-api-ruby#breaking-change-notice-for-version-1000) [shopify_app upgrading](https://github.com/Shopify/shopify_app/blob/main/docs/Upgrading.md)
+
+Upgrade to Ruby 2.7.7.
+
+For security reason, you can disable the auto login feature via configuration in `config/initializers/disco_app.rb`.
+```
+DiscoApp.configure do |config|
+  ...
+
+  config.disable_auto_login = true
+
+  ...
+end
+```
+
 
 ## Upgrading from 0.18.6 to 0.19.0
 No changes required.
