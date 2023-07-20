@@ -6,6 +6,7 @@ module DiscoApp
         shop = DiscoApp::Shop.find_or_initialize_by(shopify_domain: session.shop)
         shop.shopify_token = session.access_token
         shop.access_scopes = session.scope.to_s
+        shop.status = DiscoApp::Shop::statuses[:never_installed]
         shop.save!
         shop.id
       end
@@ -13,12 +14,12 @@ module DiscoApp
       def retrieve(id)
         return unless id
 
-        shop = Shop.find_by(id: id)
+        shop = DiscoApp::Shop.valid_status.find_by(id: id)
         construct_session(shop)
       end
 
       def retrieve_by_shopify_domain(domain)
-        shop = DiscoApp::Shop.find_by(shopify_domain: domain)
+        shop = DiscoApp::Shop.valid_status.find_by(shopify_domain: domain)
         construct_session(shop)
       end
 
