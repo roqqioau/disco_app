@@ -35,6 +35,7 @@ module DiscoApp::Concerns::Shop
     # Define some useful scopes.
     scope :status, ->(status) { where status: status }
     scope :installed, -> { where status: statuses[:installed] }
+    scope :valid_status, -> { where.not status: statuses[:uninstalled] }
     scope :has_active_shopify_plan, -> { where.not(plan_name: [:cancelled, :frozen, :fraudulent]) }
     scope :shopify_plus, -> { where(plan_name: :shopify_plus) }
 
