@@ -6,7 +6,7 @@ module DiscoApp
         shop = DiscoApp::Shop.find_or_initialize_by(shopify_domain: session.shop)
         shop.shopify_token = session.access_token
         shop.access_scopes = session.scope.to_s
-        shop.status = DiscoApp::Shop::statuses[:never_installed] if shop.status == DiscoApp::Shop::statuses[:uninstalled]
+        shop.status = DiscoApp::Shop::statuses[:never_installed] if shop.uninstalled?
         shop.save!
         shop.id
       end
