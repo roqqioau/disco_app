@@ -41,7 +41,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'rails_12factor', '~> 0.0.3'
   s.add_runtime_dependency 'react-rails', '~> 2.5'
   s.add_runtime_dependency 'sass-rails', '~> 6.0'
-  s.add_runtime_dependency 'shopify_api', '~> 12.3'
+  s.add_runtime_dependency 'shopify_api', '~> 13.4.0'
   s.add_runtime_dependency 'shopify_app', '~> 21.3'
   s.add_runtime_dependency 'sidekiq', '~> 6.0'
   s.add_runtime_dependency 'sinatra', '~> 2.0'
